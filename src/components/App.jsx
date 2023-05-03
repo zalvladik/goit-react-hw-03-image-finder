@@ -1,8 +1,7 @@
 import {Component} from "react"
-import component from './Components'
+import components from './Components'
 import './styles.css'
-
-const {Searchbar,ImageGallery,ImageGalleryItem,Loader,Button,Modal} = component
+const {Searchbar,ImageGallery,ImageGalleryItem,Loader,Button,Modal} = components
 
 
 class App extends Component{
@@ -25,7 +24,7 @@ class App extends Component{
       {this.state.searchValue &&
       <ImageGallery >
           <ImageGalleryItem
-          searchWord = {this.state.searchValue}
+          wordForUrl = {this.state.searchValue}
           />
       </ImageGallery>}
       

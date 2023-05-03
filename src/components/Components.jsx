@@ -5,7 +5,7 @@ import ImageGallery from './ImageGallery/ImageGallery'
 import Searchbar from './Searchbar/Searchbar'
 import Modal from './Modal/Modal'
 
-const component = {
+const components = {
     Button,
     Loader,
     ImageGallery,
@@ -14,6 +14,6 @@ const component = {
     Modal,
 }
 
-export default component
+export default components
 
     

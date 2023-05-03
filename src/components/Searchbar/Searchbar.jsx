@@ -1,5 +1,4 @@
 import {Component} from "react"
-import '../styles.css'
 import PropTypes from 'prop-types'
 
 class Searchbar extends Component {
@@ -7,20 +6,20 @@ class Searchbar extends Component {
       currentValue:'',
     }
     
-    searchBarValue  = e => {
+    searchBarValue  =  (e) => {
         e.preventDefault()
-
         if(this.state.currentValue.trim() === ''){
-           return alert('pls, write word')
-        }
+          return alert('pls, write word')
+       }
+       
         this.props.onSubmit(this.state.currentValue)
-        
-        this.setState({value:''})
+        this.setState({currentValue:''})
     } 
     
     currentValue = e => {
         this.setState({currentValue : e.currentTarget.value.toLowerCase()})
     }
+
     render(){
     return(
         <header className="searchbar">
@@ -35,7 +34,7 @@ class Searchbar extends Component {
       autoComplete="off"
       autoFocus
       placeholder="Search images and photos"
-      value={this.state.searchValue}
+      value={this.state.currentValue}
       onChange={this.currentValue}
     />
   </form>
