@@ -5,13 +5,13 @@ class ImageGalleryItem extends Component{
         arrayPhotos:[],
     }
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate (prevProps, prevState){
         if(prevProps.wordForUrl !== this.props.wordForUrl){
            const API_KEY = '35063138-0f7111e05497fae6e002d2e8a'
            const MAIN_URL = 'https://pixabay.com/api/'
-        fetch('https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12')
+        fetch('https://pixabay.com/api/?q=cat&page=1&key=35063138-0f7111e05497fae6e002d2e8a&image_type=photo&orientation=horizontal&per_page=12')
             .then(result => result.json())
-            .then(arrayPhotos => this.setState({arrayPhotos}))
+            .then(arrayPhotos => console.log(arrayPhotos))
             .catch(error => console.log(error))
         }
         console.log(this.state.arrayPhotos)

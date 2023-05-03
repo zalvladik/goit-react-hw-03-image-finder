@@ -9,14 +9,13 @@ class App extends Component{
     searchValue:'',
    }
 
-  searchFunc = searchValue => {
-    this.setState({searchValue})
-    console.log('Поточне слово: ',this.state.searchValue)
+  searchFunc = async searchValue => {
+    await this.setState({searchValue})
    }
 
   render(){
     return(
-      <div className='App'>
+      <div className='container'>
       <Searchbar
       onSubmit = {this.searchFunc}
       /> 

@@ -1,5 +1,6 @@
 import {Component} from "react"
 import PropTypes from 'prop-types'
+import './styles.css'
 
 class Searchbar extends Component {
     state = {
@@ -25,7 +26,7 @@ class Searchbar extends Component {
         <header className="searchbar">
   <form onSubmit={this.searchBarValue} className="form">
     <button type="submit" className="button">
-      <span className="button-label">Search</span>
+      <span className="button-label">X</span>
     </button>
 
     <input
