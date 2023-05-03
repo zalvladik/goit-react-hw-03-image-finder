@@ -1,4 +1,4 @@
-
+import './styles.css'
 
 const ImageGallery = ({children}) =>{
     return(
