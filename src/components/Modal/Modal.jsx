@@ -25,6 +25,7 @@ class Modal extends Component{
 
 Modal.propTypes = {
     hrefBigPhoto: PropTypes.string.isRequired,
+    addHrefBigPhoto: PropTypes.func.isRequired,
 }
 
 export default Modal

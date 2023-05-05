@@ -37,6 +37,7 @@ class App extends Component{
   addHrefBigPhoto = (hrefBigPhoto) =>{
     this.setState({hrefBigPhoto})
   }
+  
   render(){
 
     return(
