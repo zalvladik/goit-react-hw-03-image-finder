@@ -1,20 +1,28 @@
 import {Component} from "react"
 import PropTypes from 'prop-types'
 import './styles.css'
+import { FaSearch } from "react-icons/fa";
 
 class Searchbar extends Component {
     state = {
-      currentValue:'',
+      currentValue:"",
+      prevName:'',
     }
     
-    searchBarValue  =  (e) => {
-        e.preventDefault()
-        if(this.state.currentValue.trim() === ''){
-          return alert('pls, write word')
-       }
+    searchBarValue = (e) => {
+      e.preventDefault()
+      if(this.state.currentValue.trim() === ""){
+        return alert('pls, write word')
+      }
+      if(this.state.prevName !== this.state.currentValue){
+        this.props.updatePhotosArray([])
+      }
+      
        
         this.props.onSubmit(this.state.currentValue)
-        this.setState({currentValue:''})
+        this.setState({
+          currentValue:"",
+          prevName:this.props.wordForUrl})
     } 
     
     currentValue = e => {
@@ -25,8 +33,8 @@ class Searchbar extends Component {
     return(
         <header className="searchbar">
   <form onSubmit={this.searchBarValue} className="form">
-    <button type="submit" className="button">
-      <span className="button-label">X</span>
+  <button disabled={this.props.didLoading} type="submit" className="button">
+      <FaSearch className='icon'/>
     </button>
 
     <input
@@ -37,7 +45,8 @@ class Searchbar extends Component {
       placeholder="Search images and photos"
       value={this.state.currentValue}
       onChange={this.currentValue}
-    />
+    /> 
+  
   </form>
 </header>
     )
@@ -46,6 +55,8 @@ class Searchbar extends Component {
 
 
 Searchbar.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  updatePhotosArray: PropTypes.func.isRequired,
+  didLoading: PropTypes.bool.isRequired,
 }
 export default Searchbar
