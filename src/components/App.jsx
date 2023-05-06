@@ -2,6 +2,7 @@ import {Component} from "react"
 import components from './Components'
 import './styles.css'
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 const {Searchbar,ImageGallery,ImageGalleryItem,Loader,Button,Modal} = components
 
 
@@ -11,23 +12,69 @@ class App extends Component{
     photosArray:[],
     didLoading:false,
     hrefBigPhoto:'',
+    currentPage: 1,
+    showModal:true,
    }
 
-  searchFunc =  (searchValue) => {
-      this.setState({searchValue})
-      this.loadingToggle(true)
-   }
+  componentDidUpdate(prevProps, prevState) {
+  if(prevState.searchValue !== this.state.searchValue ||
+     prevState.currentPage !== this.state.currentPage ){
+    this.setState({didLoading:true})
 
-  updatePhotosArray = (photosArray) =>{
-     this.setState({photosArray})
-     this.loadingToggle(false)
+        const API_KEY = '35063138-0f7111e05497fae6e002d2e8a'
+        const MAIN_URL = 'https://pixabay.com/api/'
+    return setTimeout(() =>{
+      fetch(`${MAIN_URL}?q=${this.state.searchValue}&page=${this.state.currentPage}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`)
+        .then(response => response.json())
+        .then(result =>{
+          if (!result.total){
+            return toast.error('Нажаль по вашому запиту нічого не знайдено', {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+          }
+          if (result.hits.length === 0){
+            return toast.error('Нажаль більше фотографій нема :(', {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+          }
+          this.setState( prevState =>({
+            photosArray:[...prevState.photosArray, ...result.hits],
+          }))
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+          this.setState({didLoading:false})
+        })
+    },1000)
+    }
+  }
+
+  onSubmit = (searchValue) => {
+    this.setState({
+      searchValue:searchValue,
+      currentPage:1,
+      photosArray:[],
+    })
+
+    this.loadingToggle(true)
   }
   
-  morePhotosArray = (photosArray) => {
-    const prevState = this.state.photosArray
-    const newState = photosArray
-    this.setState({photosArray:[...prevState,...newState]})
-    this.loadingToggle(false)
+  handlePage = () => {
+    this.setState({currentPage:this.state.currentPage+1})
   }
 
   loadingToggle = (bool) =>{
@@ -38,40 +85,42 @@ class App extends Component{
     this.setState({hrefBigPhoto})
   }
   
-  render(){
+  toggleModal = () =>{
+    this.setState({showModal: !this.state.showModal,}) 
+    
+  }
 
+  render(){
+  const {searchValue,photosArray,didLoading,hrefBigPhoto,showModal} = this.state
     return(
       <div className='container'>
       <Searchbar
-      onSubmit = {this.searchFunc}
-      updatePhotosArray = {this.updatePhotosArray}
-      didLoading = {this.state.didLoading}
+      onSubmit = {this.onSubmit}
+      didLoading = {didLoading}
       /> 
       
+        {searchValue && 
         <ImageGallery>
-              <ImageGalleryItem
-              wordForUrl = {this.state.searchValue}
-              updatePhotosArray = {this.updatePhotosArray}
-              photosArray = {this.state.photosArray}
-              loadingToggle = {this.loadingToggle}
-              addHrefBigPhoto = {this.addHrefBigPhoto}
-              />
-        </ImageGallery>
+            <ImageGalleryItem
+            photosArray = {photosArray} 
+            addHrefBigPhoto = {this.addHrefBigPhoto}
+            toggleModal = {this.toggleModal}
+            />
+        </ImageGallery>}
       
-      {this.state.didLoading && 
-      <Loader/>}
+      {didLoading && 
+        <Loader/>}
 
-      {this.state.photosArray.length > 0 && 
+      {photosArray.length > 0 && 
         <Button
-            wordForUrl = {this.state.searchValue}
-            morePhotosArray = {this.morePhotosArray}
-            loadingToggle = {this.loadingToggle}
-            didLoading = {this.state.didLoading}
+        handlePage = {this.handlePage}
+        didLoading = {didLoading}
       />}
-      <Modal
-        hrefBigPhoto={this.state.hrefBigPhoto}
-        addHrefBigPhoto = {this.addHrefBigPhoto}
-      />
+      {!showModal && 
+        <Modal
+        hrefBigPhoto={hrefBigPhoto}
+        toggleModal = {this.toggleModal}
+      />}
       <ToastContainer/>
       </div>
     )

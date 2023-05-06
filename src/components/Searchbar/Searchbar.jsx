@@ -2,6 +2,7 @@ import {Component} from "react"
 import PropTypes from 'prop-types'
 import './styles.css'
 import { FaSearch } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 class Searchbar extends Component {
     state = {
@@ -11,14 +12,23 @@ class Searchbar extends Component {
     
     searchBarValue = (e) => {
       e.preventDefault()
+      if(this.state.currentValue.trim() === this.state.prevName){
+        return toast.error(`Ви уже продивляєтесь ${this.state.currentValue}`, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+      }
+
       if(this.state.currentValue.trim() === ""){
         return alert('pls, write word')
       }
-      if(this.state.prevName !== this.state.currentValue){
-        this.props.updatePhotosArray([])
-      }
       
-       
         this.props.onSubmit(this.state.currentValue)
         this.setState({
           currentValue:"",
@@ -56,7 +66,6 @@ class Searchbar extends Component {
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  updatePhotosArray: PropTypes.func.isRequired,
   didLoading: PropTypes.bool.isRequired,
 }
 export default Searchbar

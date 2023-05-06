@@ -7,10 +7,6 @@
     width: 100%;
     background-color:rgba(0, 0, 0, 0.2);
 } 
-.overlay.is-hidden{
-    opacity:0;
-    pointer-events: none;
-}
 
 .modal{
     position: absolute;
