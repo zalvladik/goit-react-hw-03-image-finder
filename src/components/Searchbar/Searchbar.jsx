@@ -12,6 +12,20 @@ class Searchbar extends Component {
     
     searchBarValue = (e) => {
       e.preventDefault()
+
+      if(this.state.currentValue.trim() === ""){
+        return toast.error(`Будь ласка введіть слово для пошуку`, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+      }
+
       if(this.state.currentValue.trim() === this.state.prevName){
         return toast.error(`Ви уже продивляєтесь ${this.state.currentValue}`, {
           position: "top-right",
@@ -24,19 +38,15 @@ class Searchbar extends Component {
           theme: "dark",
           });
       }
-
-      if(this.state.currentValue.trim() === ""){
-        return alert('pls, write word')
-      }
       
         this.props.onSubmit(this.state.currentValue)
         this.setState({
           currentValue:"",
-          prevName:this.props.wordForUrl})
+          prevName:this.state.currentValue})
     } 
     
     currentValue = e => {
-        this.setState({currentValue : e.currentTarget.value.toLowerCase()})
+        this.setState({currentValue : e.currentTarget.value.toLowerCase().trim()})
     }
 
     render(){
