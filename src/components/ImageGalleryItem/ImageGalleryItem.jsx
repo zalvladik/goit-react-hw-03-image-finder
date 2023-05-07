@@ -1,5 +1,4 @@
 import { Component } from "react"
-import { nanoid } from 'nanoid'
 import './styles.css'
 import PropTypes from 'prop-types'
 
@@ -16,7 +15,7 @@ class ImageGalleryItem extends Component{
             return(
                 this.props.photosArray && this.props.photosArray
             .map(photo =>
-            <li onClick={this.openModal} key={nanoid()} id={photo.id} className="gallery-item">    
+            <li onClick={this.openModal} key={photo.id} id={photo.id} className="gallery-item">    
                 <img 
                 src={photo.webformatURL} 
                 alt={photo.tags} 
@@ -30,7 +29,14 @@ class ImageGalleryItem extends Component{
 } 
 
 ImageGalleryItem.propTypes = {
-    photosArray: PropTypes.array.isRequired,
+    photosArray: PropTypes.arrayOf(
+        PropTypes.shape({
+            id:PropTypes.number.isRequired,
+            tags:PropTypes.string.isRequired,
+            webformatURL:PropTypes.string.isRequired,
+            largeImageURL:PropTypes.string.isRequired,
+        })
+    ),
     addHrefBigPhoto: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,
 }
